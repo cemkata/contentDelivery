@@ -183,12 +183,12 @@ def migrating():
     toReplace = [("""const rootPath = "/files";""","""const rootPath = "/folderTreeOrganiser";""")]
     replace_in_file(toReplace, destination)
 
-    toReplace = [('''/getFiles''','''/folderTreeView/getFiles'''),
-    ('''addleaf(treeMenu, treeValues, "");''','''addleaf(treeMenu, treeValues, ".");''')
-    ]
     destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.js")
     replace_in_file(toReplace, destination)
     destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.old.js")
+    toReplace = [('''/getFiles''','''/folderTreeView/getFiles'''),
+    ('''addleaf(treeMenu, treeValues, "");''','''addleaf(treeMenu, treeValues, ".");''')
+    ]
     replace_in_file(toReplace, destination)
 
     ##############################################
@@ -229,8 +229,7 @@ def configuring():
     replace_in_file(toReplace, destination)
 
     destination = os.path.join(cwd, "folderTreeView", "config_patched.ini")
-    toReplace = [('''updateInterval = ''', '''updateInterval = 0\n;'''),
-    ('''serverRoot''',f'''serverRoot={contentFolder}/files/\n;''')]
+    toReplace = [('''serverRoot''',f'''serverRoot={contentFolder}/files/\n;''')]
     replace_in_file(toReplace, destination)
 
     destination = os.path.join(cwd, "folderTreeView", "file_orginiser_patched.py")
@@ -245,6 +244,9 @@ def finishingUP(FLAG = "DONE_PATCHING"):
     with open(FLAG, 'w') as file: 
         file.write("")
 
+def removeFlag(FLAG = "DONE_PATCHING"):
+    os.remove(FLAG)
+
 def installModul(mod_name, basedir = '.\\', extractPath = ""):
     # loading the temp.zip and creating a zip object
     with ZipFile(os.path.join(basedir, "_zips", mod_name + "-main.zip"), 'r') as zObject: 
@@ -256,7 +258,7 @@ def installModul(mod_name, basedir = '.\\', extractPath = ""):
                 os.path.join(basedir, extractPath, mod_name))
 
 def cleanUp(mod_name, basedir = '.\\', extractPath = ""):
-    shutil.rmtree(os.path.join(basedir, extractPath, mod_name), ignore_errors=True)
+    shutil.rmtree(os.path.join(basedir, extractPath, mod_name + "-main"), ignore_errors=True)
 
 def install_moduls():
     modul_list = ["flashcards", "folderTreeView", "simpleQuizEngine"]
@@ -304,6 +306,7 @@ if __name__ == '__main__':
         configuring()
     elif choise == 3:
         uninstall_moduls()
+        removeFlag()
         exit()
 
     print("Done now you can start with mainScript.py")

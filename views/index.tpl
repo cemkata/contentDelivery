@@ -50,40 +50,25 @@
 </style>
 <title>Materials managment</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body style="font-family:Verdana;color:#aaaaaa;">
 
 <div style="background-color:#e5e5e5;padding:0.33%;text-align:center;">
   <h2>Select:</h2>
 </div>
-
+% for app in app_names:
 <div style="overflow:auto">
-  <div class="collum btnGreen" id="main" onclick="location.href='./simpleQuizEngine/main/';">
-    <h2>View avalable quizes</h2>
+  <div class="collum btnGreen" id="main" onclick="location.href='.{{app[0][0]}}';">
+    <h2>{{app[0][1]}}</h2>
   </div>
   <div id="split"></div>
-  <div class="collum btnRed" id="right" onclick="location.href='./simpleQuizEngine/editor/';">
-    <h2>Open editor</h2>
+  <div class="collum btnRed" id="right" onclick="location.href='.{{app[1][0]}}';">
+    <h2>{{app[1][1]}}</h2>
   </div>
 </div>
-<div style="overflow:auto">
-  <div class="collum btnGreen" id="main" onclick="location.href='./flashcards/';">
-    <h2>View flashcards</h2>
-  </div>
-  <div id="split"></div>
-  <div class="collum btnRed" id="right" onclick="location.href='./flashcards/be/';">
-    <h2>Open flashcards editor</h2>
-  </div>
-</div>
-<div style="overflow:auto">
-  <div class="collum btnGreen" id="main" onclick="location.href='./folderTreeView/';">
-    <h2>View files/documents</h2>
-  </div>
-  <div id="split"></div>
-  <div class="collum btnRed" id="right" onclick="location.href='./folderTreeOrganiser/';">
-    <h2>Open files organiser</h2>
-  </div>
-</div>
+% end
 <div style="background-color:#e5e5e5;text-align:center;padding:0.25%;margin-top:7px;"><!-- footer / © copyright --></div>
 
 </body>

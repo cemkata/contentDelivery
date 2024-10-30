@@ -30,6 +30,12 @@ apps_moduls = [(staticFiles, '/'), \
  (simpleQuizEngine, '/simpleQuizEngine/')\
 ]
 
+app_names = [
+(('/simpleQuizEngine/main/', "View avalable quizes"), ('/simpleQuizEngine/editor/', "Open editor")),
+(('/flashcards/', "View flashcards"), ('/flashcards/be/', "Open flashcards editor")),
+(('/folderTreeView/', "View files/documents"), ('/folderTreeOrganiser/', "Open files organiser"))
+]
+
 app = Bottle()
 
 for module in apps_moduls:
@@ -37,7 +43,7 @@ for module in apps_moduls:
 
 @app.route('/')
 def index():
-    return template("index")
+    return template("index", app_names = app_names)
 
 class MyWSGIRefServer(ServerAdapter):
     def run(self, handler):
