@@ -153,7 +153,7 @@ def migrating():
     for tpl in glob.glob(destination+"/*.tpl"):
         replace_in_file(toReplace, tpl)
     source = './views/simpleQuizEngine/footer.tpl'
-    toReplace = [("""from versionGetter import getVersion""","""from simpleQuizEngine.versionGetter import getVersion""")]
+    toReplace = [("""from versionGetter import getVersion""","""from simpleQuizEngine.versionGetter_patched import getVersion""")]
     replace_in_file(toReplace, source)
     source = './views/simpleQuizEngine/showquestions.tpl'
     toReplace = [("""/editor/""","""./""")]
