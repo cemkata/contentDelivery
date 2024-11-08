@@ -13,8 +13,7 @@ The configuraion is simple: port ip where to listen folder where to store the fi
 To configure edit the file config_files\config.ini
 - port - changes the server port
 - ip - the ip address where to listen
-- contentFolder - the folder where to save the exam files
-
+- contentFolder - the folder where to save: the exam files/flashcards database/other files accesible via folderTreeView
 
 How to install: 
 1. Downaload the sources as zips from here and my 3 other projects here in git hub: [flashcards](https://github.com/cemkata/flashcards/), [folderTreeView](https://github.com/cemkata/folderTreeView/), [simpleQuizEngine](https://github.com/cemkata/simpleQuizEngine/)
