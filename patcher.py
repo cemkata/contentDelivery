@@ -116,7 +116,8 @@ def patching():
     source = os.path.join(cwd, "simpleQuizEngine", "importQuestionsHelper.py")
     destination = os.path.join(cwd, "simpleQuizEngine", "importQuestionsHelper_patched.py")
     shutil.copy(source, destination)
-    toReplace = [('''from config ''', '''from simpleQuizEngine.config_patched ''')]
+    toReplace = [('''from config ''', '''from simpleQuizEngine.config_patched '''),
+                 ('''from versionGetter ''', '''from simpleQuizEngine.versionGetter_patched ''')]
     replace_in_file(toReplace, destination)
 
     ##############################################
