@@ -48,11 +48,13 @@
   }
 }
 </style>
+%if newTab:
 <script>
 	function NewTab(url) {
 		window.open(url, "_blank");
 	}
 </script>
+%end
 <title>Materials managment</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
