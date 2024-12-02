@@ -209,6 +209,8 @@ def migrating():
     toReplace = [("""/static""","""/flashcards/static/""")]
     replace_in_file(toReplace, destination)
 
+    return
+
     ##############################################
     ## pathing favicon                          ##
     ##############################################
