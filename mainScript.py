@@ -9,7 +9,7 @@ try:
 except ModuleNotFoundError:
     PASTE_SERVER = False
 
-from config import serverAddres, serverPort
+from config import serverAddres, serverPort, newTab
 
 if not os.path.isfile("DONE_PATCHING"):
     print("Please firsth install by start patcher.py")
@@ -21,7 +21,7 @@ import flashcards.flashcards_patched as flashcards
 import simpleQuizEngine.quiz_patched as simpleQuizEngine
 import staticFiles
 
-ver = 0.5
+ver = 0.6
 
 apps_moduls = [(staticFiles, '/'), \
  (flashcards, '/flashcards/'), \
@@ -43,7 +43,7 @@ for module in apps_moduls:
 
 @app.route('/')
 def index():
-    return template("index", app_names = app_names)
+    return template("index", app_names = app_names, newTab = newTab)
 
 class MyWSGIRefServer(ServerAdapter):
     def run(self, handler):

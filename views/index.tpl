@@ -48,9 +48,12 @@
   }
 }
 </style>
+<script>
+	function NewTab(url) {
+		window.open(url, "_blank");
+	}
+</script>
 <title>Materials managment</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body style="font-family:Verdana;color:#aaaaaa;">
@@ -60,16 +63,24 @@
 </div>
 % for app in app_names:
 <div style="overflow:auto">
+%if newTab:
+  <div class="collum btnGreen" id="main" onclick="NewTab('.{{app[0][0]}}');">
+%else:
   <div class="collum btnGreen" id="main" onclick="location.href='.{{app[0][0]}}';">
+%end
     <h2>{{app[0][1]}}</h2>
   </div>
   <div id="split"></div>
+%if newTab:
+  <div class="collum btnRed" id="right" onclick="NewTab('.{{app[1][0]}}');">
+%else:
   <div class="collum btnRed" id="right" onclick="location.href='.{{app[1][0]}}';">
+%end
+  
     <h2>{{app[1][1]}}</h2>
   </div>
 </div>
 % end
 <div style="background-color:#e5e5e5;text-align:center;padding:0.25%;margin-top:7px;"><!-- footer / © copyright --></div>
-
 </body>
 </html>

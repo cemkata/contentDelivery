@@ -24,6 +24,12 @@ if os.path.isfile(os.path.abspath(cnfgFile)):
                              'on': True, 'off': False,
                              'yes': True, 'no': False,
                              'enable': True, 'disable': False}
+    newTab = False
+    if config.has_option('DEFAULT', "newTab"):
+        try:
+            newTab = config.getboolean('DEFAULT', "newTab")
+        except ValueError:
+            pass
 else:
     print("Warning!!")
     print("Using default config")
@@ -32,6 +38,7 @@ else:
     serverAddres = "127.0.0.1"
     # Port of the web interface
     serverPort = 8080
+    newTab = False
 
 if not os.path.exists(contentFolder):
     os.makedirs(contentFolder)
