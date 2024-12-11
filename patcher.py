@@ -184,12 +184,12 @@ def migrating():
     toReplace = [("""const rootPath = "/files";""","""const rootPath = "/folderTreeOrganiser";""")]
     replace_in_file(toReplace, destination)
 
-    destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.js")
-    replace_in_file(toReplace, destination)
-    destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.old.js")
     toReplace = [('''/getFiles''','''/folderTreeView/getFiles'''),
     ('''addleaf(treeMenu, treeValues, "");''','''addleaf(treeMenu, treeValues, ".");''')
     ]
+    destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.js")
+    replace_in_file(toReplace, destination)
+    destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.old.js")
     replace_in_file(toReplace, destination)
 
     ##############################################
