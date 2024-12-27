@@ -232,7 +232,8 @@ def configuring():
     replace_in_file(toReplace, destination)
 
     destination = os.path.join(cwd, "folderTreeView", "config_patched.ini")
-    toReplace = [('''serverRoot''',f'''serverRoot={contentFolder}/files/\n;''')]
+    toReplace = [('''serverRoot''',f'''serverRoot={contentFolder}/files/\n;'''),
+                 ('''updateInterval = -1''','''updateInterval = 0''')]
     replace_in_file(toReplace, destination)
 
     destination = os.path.join(cwd, "folderTreeView", "file_orginiser_patched.py")
@@ -287,14 +288,20 @@ def uninstall_moduls():
 if __name__ == '__main__':
 
     choise = -1
-    while choise < 0 and choise < 4:
+    while choise < 0 and choise < 5:
         print("Select option:")
         print("[1] Clean install/reinstall")
         print("[2] Reconfigure")
         print("[3] Uninstall")
+        if os.path.isfile("DONE_PATCHING"):
+            print("[4] Re-install")
         choise = input()
         try:
             choise = int(choise)
+            if not os.path.isfile("DONE_PATCHING"):
+                if choise == 4:
+                    choise = -1
+            
         except:
             print("Wrong selection!")
             choise = -1
@@ -311,6 +318,15 @@ if __name__ == '__main__':
         uninstall_moduls()
         removeFlag()
         exit()
-
+    elif choise == 4:
+        print("Deleting old instalation")
+        uninstall_moduls()
+        removeFlag()
+        install_moduls()
+        patching()
+        migrating()
+        configuring()
+        finishingUP()
+        
     print("Done now you can start with mainScript.py")
     input()
