@@ -68,6 +68,10 @@
   border-radius: 25%;
   border: 1px solid black;
   text-align: center;
+  cursor: pointer;
+}
+.close:hover {
+  background-color: #F40009;
 }
 
 iframe {
