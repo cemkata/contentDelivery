@@ -14,6 +14,12 @@ To configure edit the file config_files\config.ini
 - port - changes the server port
 - ip - the ip address where to listen
 - contentFolder - the folder where to save: the exam files/flashcards database/other files accesible via folderTreeView
+- newTab - if the links to the apps will be opened in new page (the home page)
+- showUsers = show the logged users used with ``showUsersComand``
+- showUsersComand = Command line returning the logged users. You can add or modify the comands as you wish. The script will run the command and return the output
+-- windows - query user
+-- linux - who -l -H
+
 
 How to install: 
 1. Downaload the sources as zips from here and my 3 other projects here in git hub: [flashcards](https://github.com/cemkata/flashcards/), [folderTreeView](https://github.com/cemkata/folderTreeView/), [simpleQuizEngine](https://github.com/cemkata/simpleQuizEngine/)
