@@ -48,6 +48,46 @@
   }
 }
 </style>
+%if showUsers:
+<style>
+#modal {
+  position: fixed;
+  left: 10%;
+  top: 10%;
+  height: 300px;
+  width: 80%;
+  background-color: white;
+  display: none;
+}
+
+.close {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  background-color: red;
+  border-radius: 25%;
+  border: 1px solid black;
+  text-align: center;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+</style>
+<script>
+	function showModal()
+	{
+	  document.getElementById('modal_iframe').src += '';
+	  document.getElementById("modal").style.display = 'block';
+	}
+	
+	function hideModal()
+	{
+	  document.getElementById("modal").style.display = 'none';
+	}
+</script>
+%end
 %if newTab:
 <script>
 	function NewTab(url) {
@@ -83,6 +123,14 @@
   </div>
 </div>
 % end
+%if showUsers:
+<div style="background-color:#e5e5e5;text-align:center;padding:0.25%;margin-top:7px;" onclick = "showModal()"><!-- footer / © copyright --></div>
+<div id="modal">
+  <div class="close" onClick="hideModal()">&times;</div>
+  <iframe name="modal_iframe" id="modal_iframe" src="./show_logged_in_users"></iframe>
+</div>
+% else:
 <div style="background-color:#e5e5e5;text-align:center;padding:0.25%;margin-top:7px;"><!-- footer / © copyright --></div>
+% end
 </body>
 </html>

@@ -20,7 +20,8 @@ if os.path.isfile(os.path.abspath(cnfgFile)):
         if not ip_pattern.match(serverAddres) and not ipv6_pattern.match(serverAddres):
             raise KeyError('Server IP address')
     contentFolder = os.path.abspath(config['DEFAULT']['contentFolder']).replace("\\","/")
-    config.BOOLEAN_STATES = {'sure': True, 'nope': False,
+    config.BOOLEAN_STATES = {'true': True, 'false': False,
+                             'sure': True, 'nope': False,
                              'on': True, 'off': False,
                              'yes': True, 'no': False,
                              'enable': True, 'disable': False}
@@ -30,6 +31,14 @@ if os.path.isfile(os.path.abspath(cnfgFile)):
             newTab = config.getboolean('DEFAULT', "newTab")
         except ValueError:
             pass
+    showUsers = False
+    showUsersComand = []
+    if config.has_option('DEFAULT', "showUsers"):
+        try:
+            showUsers = config.getboolean('DEFAULT', "showUsers")
+            showUsersComand = config['DEFAULT']["showUsersComand"].split(" ")
+        except ValueError:
+            pass     
 else:
     print("Warning!!")
     print("Using default config")
@@ -39,6 +48,8 @@ else:
     # Port of the web interface
     serverPort = 8080
     newTab = False
+    showUsers = False
+    showUsersComand = []
 
 if not os.path.exists(contentFolder):
     os.makedirs(contentFolder)

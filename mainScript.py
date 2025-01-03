@@ -9,7 +9,7 @@ try:
 except ModuleNotFoundError:
     PASTE_SERVER = False
 
-from config import serverAddres, serverPort, newTab
+from config import serverAddres, serverPort, newTab, showUsers, showUsersComand
 
 if not os.path.isfile("DONE_PATCHING"):
     print("Please firsth install by start patcher.py")
@@ -43,7 +43,13 @@ for module in apps_moduls:
 
 @app.route('/')
 def index():
-    return template("index", app_names = app_names, newTab = newTab)
+    return template("index", app_names = app_names, newTab = newTab, showUsers = showUsers)
+
+if showUsers:
+    @app.route('/show_logged_in_users')
+    def index():
+        result = subprocess.run(showUsersComand, stdout=subprocess.PIPE)
+        return template('users', result=result.stdout)
 
 class MyWSGIRefServer(ServerAdapter):
     def run(self, handler):
