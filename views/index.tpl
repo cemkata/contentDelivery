@@ -27,7 +27,7 @@
   line-height: 65vh;
 }
 
-@media only screen and (max-width: 1800px) {
+@media only screen and (max-width: 1872px) {
   /* For small screens phones: */
   div{
       padding: 1px;
