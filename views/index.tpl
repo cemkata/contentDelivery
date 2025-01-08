@@ -108,7 +108,7 @@ iframe {
   <h2>Select:</h2>
 </div>
 % for app in app_names:
-<div>
+<div style="overflow:auto">
 %if newTab:
   <div class="collum btnGreen" id="main" onclick="NewTab('.{{app[0][0]}}');">
 %else:
