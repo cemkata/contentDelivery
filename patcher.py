@@ -416,7 +416,6 @@ if __name__ == '__main__':
         exit()
     elif choise == 4:
         Tree, Cards, Quiz = select_moduls()
-        print(Tree, Cards, Quiz)
         print("")
         print("Deleting old instalation")
         uninstall_moduls(Tree, Cards, Quiz)
