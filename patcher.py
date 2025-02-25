@@ -351,9 +351,9 @@ def install_moduls(Tree = 1, Cards = 1, Quiz = 1):
     if Cards == 1:
         modul_list.append("flashcards")
     if Quiz == 1:
-        modul_list.append("folderTreeView")
-    if Tree == 1:
         modul_list.append("simpleQuizEngine")
+    if Tree == 1:
+        modul_list.append("folderTreeView")
         
     for m in modul_list:
         if not os.path.exists(m):
@@ -416,6 +416,7 @@ if __name__ == '__main__':
         exit()
     elif choise == 4:
         Tree, Cards, Quiz = select_moduls()
+        print(Tree, Cards, Quiz)
         print("")
         print("Deleting old instalation")
         uninstall_moduls(Tree, Cards, Quiz)
