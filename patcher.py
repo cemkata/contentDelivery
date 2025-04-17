@@ -3,6 +3,8 @@ import os
 import shutil
 from config import contentFolder
 
+ver = 1.1
+
 def replace_in_file(toReplace_list, destination_file):
     for r in toReplace_list:
         search_text = r[0]
@@ -152,6 +154,7 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         destination = os.path.join(cwd, "views", "simpleQuizEngine")
         shutil.rmtree(destination, ignore_errors=True)
         shutil.copytree(source, destination, dirs_exist_ok=True)
+        shutil.rmtree(source, ignore_errors=True)
         toReplace = [("""% include('footer.tpl')""","""% include('simpleQuizEngine/footer.tpl')"""),
                      ("""/static""","""/simpleQuizEngine/static""")
                      ]
@@ -169,7 +172,9 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         source = './views/simpleQuizEngine/index.tpl'
         toReplace = [("""saveFile('/main/get""","""saveFile('/simpleQuizEngine/main/get""")]
         replace_in_file(toReplace, source)
-
+        source = './views/simpleQuizEngine/static/quiz.js'
+        toReplace = [("""/editor/editQuestion?courseID=""","""/simpleQuizEngine/editor/editQuestion?courseID=""")]
+        replace_in_file(toReplace, source)
     if Tree == 1:
         ##############################################
         ## pathing folderTreeView templates         ##
@@ -178,6 +183,7 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         destination = os.path.join(cwd, "views", "folderTreeView")
         shutil.rmtree(destination, ignore_errors=True)
         shutil.copytree(source, destination, dirs_exist_ok=True)
+        shutil.rmtree(source, ignore_errors=True)
         toReplace = [("""/static""","""/folderTreeView/static""")]
         for tpl in glob.glob(destination+"/*.tpl"):
             replace_in_file(toReplace, tpl)
@@ -205,6 +211,7 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         destination = os.path.join(cwd, "views", "flashcards")
         shutil.rmtree(destination, ignore_errors=True)
         shutil.copytree(source, destination, dirs_exist_ok=True)
+        shutil.rmtree(source, ignore_errors=True)
         toReplace = [("""% include('__header.tpl')""","""% include('flashcards/__header.tpl')"""),
         ("""% include('__footer.tpl')""","""% include('flashcards/__footer.tpl')"""),
         ("""% from config import ver""","""% from flashcards.config import ver""")]
@@ -382,24 +389,33 @@ def uninstall_moduls(Tree = 1, Cards = 1, Quiz = 1):
         shutil.rmtree(destination, ignore_errors=True)
 
 if __name__ == '__main__':
-
     choise = -1
-    while choise < 0 and choise < 5:
+    while not (choise > 0 and choise < 5):
         print("Select option:")
         print("[1] Clean install/reinstall")
         print("[2] Reconfigure")
         print("[3] Uninstall")
         if os.path.isfile("DONE_PATCHING"):
             print("[4] Re-install/upgrade module")
-        choise = input()
+        print("\nFor help - h\n")
+        choise = input(">>> ")
         try:
             choise = int(choise)
             if not os.path.isfile("DONE_PATCHING"):
                 if choise == 4:
                     choise = -1
-            
         except:
-            print("Wrong selection!")
+            if choise == 'a' or choise== 'A':
+                print(f"Installer version: {ver}")
+            elif choise == 'q' or choise== 'Q':
+                quit()
+            elif choise == 'h' or choise== 'H':
+                print("a - shows the version")
+                print("q - exits the installer")
+                print("h - this help")
+            else:
+                print("Wrong selection!")
+            print("\n\n\n")
             choise = -1
     print("")
     if choise == 1:
@@ -425,6 +441,9 @@ if __name__ == '__main__':
         migrating(Tree, Cards, Quiz)
         configuring(Tree, Cards, Quiz)
         finishingUP()
-        
+    else:
+        print("Option not found")
+        exit()
+
     print("Done now you can start with mainScript.py")
     input()
