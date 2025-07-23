@@ -3,7 +3,7 @@ import os
 import shutil
 from config import contentFolder
 
-ver = 1.1
+ver = 1.2
 
 def replace_in_file(toReplace_list, destination_file):
     for r in toReplace_list:
@@ -91,6 +91,7 @@ def patching(Tree = 1, Cards = 1, Quiz = 1):
         ("""template('""","""template('flashcards/"""),
         ('''template("''','''template("flashcards/'''),
         ('''redirect("/showflashcards''','''redirect("./showflashcards'''),
+        ('''redirect("/showhangmanwordselection''','''redirect("./showhangmanwordselection'''),
         ("""return static_file(filepath, root='./views/ui')""","""return static_file(filepath, root='./views/flashcards/ui')""")]
         replace_in_file(toReplace, destination)
 
@@ -221,7 +222,10 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         destination = os.path.join(cwd, "views", "flashcards", "__header.tpl")
         toReplace = [("""/static""","""/flashcards/static/""")]
         replace_in_file(toReplace, destination)
-
+        
+        destination = os.path.join(cwd, "views", "flashcards", "fe_hangman.tpl")
+        toReplace = [("""/static""","""/flashcards/static/""")]
+        replace_in_file(toReplace, destination)
     return
 
     ##############################################
