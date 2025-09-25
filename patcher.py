@@ -197,7 +197,8 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         replace_in_file(toReplace, destination)
 
         toReplace = [('''/getFiles''','''/folderTreeView/getFiles'''),
-        ('''addleaf(treeMenu, treeValues, "");''','''addleaf(treeMenu, treeValues, ".");''')
+        ('''addleaf(treeMenu, treeValues, "");''','''addleaf(treeMenu, treeValues, ".");'''),
+        ('''file_organaser_url = "./files/"''','''file_organaser_url = "/folderTreeOrganiser/"''')
         ]
         destination = os.path.join(cwd, "views", "folderTreeView", "static", "treemenu.js")
         replace_in_file(toReplace, destination)
@@ -451,3 +452,4 @@ if __name__ == '__main__':
 
     print("Done now you can start with mainScript.py")
     input()
+
