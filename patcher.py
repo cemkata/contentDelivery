@@ -3,7 +3,7 @@ import os
 import shutil
 from config import contentFolder
 
-ver = 1.2
+ver = 1.3
 
 def replace_in_file(toReplace_list, destination_file):
     for r in toReplace_list:
@@ -76,7 +76,7 @@ def patching(Tree = 1, Cards = 1, Quiz = 1):
         ('''skipPrefix = ''', '''skipPrefix = ./folderTreeView/'''),
         ('''skipExtension = ''', '''skipExtension = ./folderTreeView/''')]
         replace_in_file(toReplace, destination)
-
+        
     if Cards == 1:
         ##############################################
         ## pathing flashcards/flashcards.py         ##
@@ -142,6 +142,18 @@ def patching(Tree = 1, Cards = 1, Quiz = 1):
                      #("""redirect('""","""redirect("."""),
                      ("""return static_file(filepath, root='./views/static')""","""return static_file(filepath, root='./views/simpleQuizEngine/static')""")]
         replace_in_file(toReplace, destination)
+        
+        ##############################################
+        ## pathing simpleQuizEngine/cmdHelper.py    ##
+        ##############################################
+        destination = os.path.join(cwd, "simpleQuizEngine", "cmdHelper.py")
+        toReplace = [("""text = template('start'""", """os.chdir(".."); text = template('simpleQuizEngine\start'""")]
+        replace_in_file(toReplace, destination)
+        
+        ##############################################
+        ## Cleaning the customer pyhton path        ##
+        ##############################################
+        os.remove(os.path.join('simpleQuizEngine', 'set_python_path.txt'))
 
 def migrating(Tree = 1, Cards = 1, Quiz = 1):
     cwd = os.getcwd()
@@ -157,15 +169,18 @@ def migrating(Tree = 1, Cards = 1, Quiz = 1):
         shutil.copytree(source, destination, dirs_exist_ok=True)
         shutil.rmtree(source, ignore_errors=True)
         toReplace = [("""% include('footer.tpl')""","""% include('simpleQuizEngine/footer.tpl')"""),
-                     ("""/static""","""/simpleQuizEngine/static""")
-                     ]
+                     ("""/static""","""/simpleQuizEngine/static""")]
         for tpl in glob.glob(destination+"/*.tpl"):
             replace_in_file(toReplace, tpl)
         source = './views/simpleQuizEngine/footer.tpl'
-        toReplace = [("""from versionGetter import getVersion""","""from simpleQuizEngine.versionGetter_patched import getVersion""")]
+        toReplace = [("""from versionGetter import getVersion""","""try:\n from simpleQuizEngine.versionGetter_patched import getVersion\nexcept ModuleNotFoundError:\n from versionGetter_patched import getVersion""")]
         replace_in_file(toReplace, source)
         source = './views/simpleQuizEngine/showquestions.tpl'
         toReplace = [("""/editor/""","""./""")]
+        replace_in_file(toReplace, source)
+        source = './views/simpleQuizEngine/start.tpl'
+        toReplace = [("""% include('static/quiz.js')""","""% include('simpleQuizEngine/static/quiz.js')"""),
+                     ("""% include('static/style.css')""","""% include('simpleQuizEngine/static/style.css')""")]
         replace_in_file(toReplace, source)
         source = './views/simpleQuizEngine/static/nicEditorMyExtension.js'
         toReplace = [("""iconsPath : '/static/nic/new_nicEditorIcons.png'""","""iconsPath : '/simpleQuizEngine/static/nic/new_nicEditorIcons.png'""")]
@@ -248,7 +263,8 @@ def configuring(Tree = 1, Cards = 1, Quiz = 1):
         
     if Quiz == 1:
         destination = os.path.join(cwd, "simpleQuizEngine", "config_files", "config.ini")
-        toReplace = [('''examFolder''',f'''examFolder={contentFolder}/exams/\n;''')]
+        toReplace = [('''examFolder''',f'''examFolder={contentFolder}/exams/\n;'''),
+                     ('''export_folder= ''', f'''export_folder={contentFolder}/\n;''')]
         replace_in_file(toReplace, destination)
     
     if Tree == 1:
@@ -403,12 +419,17 @@ if __name__ == '__main__':
         if os.path.isfile("DONE_PATCHING"):
             print("[4] Re-install/upgrade module")
         print("\nFor help - h\n")
+        print("")
+        print("")
+        print("[99] Exit")
         choise = input(">>> ")
         try:
             choise = int(choise)
             if not os.path.isfile("DONE_PATCHING"):
                 if choise == 4:
                     choise = -1
+                elif choise == 99:
+                    exit()
         except:
             if choise == 'a' or choise== 'A':
                 print(f"Installer version: {ver}")
@@ -452,4 +473,3 @@ if __name__ == '__main__':
 
     print("Done now you can start with mainScript.py")
     input()
-
