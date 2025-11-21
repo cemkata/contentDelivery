@@ -151,6 +151,14 @@ def patching(Tree = 1, Cards = 1, Quiz = 1):
         replace_in_file(toReplace, destination)
         
         ##############################################
+        ## pathing simpleQuizEngine/consoleMenu.py  ##
+        ##############################################
+        destination = os.path.join(cwd, "simpleQuizEngine", "consoleMenu.py")
+        toReplace = [("""print("Start web server ........................... [4]")""", """#print("Start web server ........................... [4]")"""),
+                     ("""elif sel == "4" or args.start:""", """elif False:""")]
+        replace_in_file(toReplace, destination)
+        
+        ##############################################
         ## Cleaning the customer pyhton path        ##
         ##############################################
         os.remove(os.path.join('simpleQuizEngine', 'set_python_path.txt'))
@@ -473,3 +481,4 @@ if __name__ == '__main__':
 
     print("Done now you can start with mainScript.py")
     input()
+
