@@ -14,8 +14,8 @@
   padding: 15px;
   margin-top: 7px;
   text-align: center;
-  height: 80vh;
-  line-height: 65vh;
+  /*height: 80vh;
+  line-height: 65vh;*/
   cursor: pointer;
   color: white;
 }
@@ -23,7 +23,8 @@
 #split {
   width: 1%;
   float: left;
-  height: 80vh;
+  /*height: 80vh;*/
+  height: 10vh;
   line-height: 65vh;
 }
 
@@ -138,3 +139,4 @@ iframe {
 % end
 </body>
 </html>
+
