@@ -1,9 +1,10 @@
 from zipfile import ZipFile 
 import os
 import shutil
+import sys
 from config import contentFolder
 
-ver = 1.3
+ver = 1.5
 
 def replace_in_file(toReplace_list, destination_file):
     for r in toReplace_list:
@@ -54,11 +55,11 @@ def patching(Tree = 1, Cards = 1, Quiz = 1):
         toReplace = [('''cnfgFile = "config.ini"''', '''cnfgFile = "./folderTreeView/config_patched.ini"'''),
         ('''port = config['DEFAULT']['Port']''', ""),
         ('''host = config['DEFAULT']['ip']''', ""),
-        ('''ip_pattern = re.compile('(?:^|\b(?<!\.))(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:1?\d\d?|2[0-4]\d|25[0-5])){3}(?=$|[^\w.])')''', ""),
+        (r'''ip_pattern = re.compile('(?:^|\b(?<!\.))(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:1?\d\d?|2[0-4]\d|25[0-5])){3}(?=$|[^\w.])')''', ""),
         ('''if not ip_pattern.match(host):''', ""),
         ('''raise KeyError('Server IP address')''', ""),
         ('''fileOrganaserFlag.lower() == "true"''', "False"),
-        ('''cnfgFile = "config.ini"''','''cnfgFile = ".\folderTreeView\config.ini"'''),
+        ('''cnfgFile = "config.ini"''',r'''cnfgFile = "./folderTreeView/config.ini"'''),
         ("""template('""","""template('folderTreeView/"""),
         ('''import file_orginiser''','''import folderTreeView.file_orginiser_patched as file_orginiser'''),
         ("""return static_file(filepath, root='./views/static')""","""return static_file(filepath, root='./views/folderTreeView/static')"""),
@@ -147,7 +148,7 @@ def patching(Tree = 1, Cards = 1, Quiz = 1):
         ## pathing simpleQuizEngine/cmdHelper.py    ##
         ##############################################
         destination = os.path.join(cwd, "simpleQuizEngine", "cmdHelper.py")
-        toReplace = [("""text = template('start'""", """os.chdir(".."); text = template('simpleQuizEngine\start'""")]
+        toReplace = [("""text = template('start'""", r"""os.chdir(".."); text = template('simpleQuizEngine\start'""")]
         replace_in_file(toReplace, destination)
         
         ##############################################
@@ -296,7 +297,7 @@ def finishingUP(FLAG = "DONE_PATCHING"):
 def removeFlag(FLAG = "DONE_PATCHING"):
     os.remove(FLAG)
 
-def installModul(mod_name, basedir = '.\\', extractPath = ""):
+def installModul(mod_name, basedir = './', extractPath = ""):
     # loading the temp.zip and creating a zip object
     with ZipFile(os.path.join(basedir, "_zips", mod_name + "-main.zip"), 'r') as zObject: 
         # Extracting all the members of the zip  
@@ -306,7 +307,7 @@ def installModul(mod_name, basedir = '.\\', extractPath = ""):
     os.rename(os.path.join(basedir, extractPath, mod_name + "-main"),
                 os.path.join(basedir, extractPath, mod_name))
 
-def cleanUp(mod_name, basedir = '.\\', extractPath = ""):
+def cleanUp(mod_name, basedir = './', extractPath = ""):
     shutil.rmtree(os.path.join(basedir, extractPath, mod_name + "-main"), ignore_errors=True)
 
 
@@ -330,7 +331,10 @@ def select_moduls():
         print("i.e 'fo' for 'flashcards + folderTreeView'")
         print("or 'so' for 'simpleQuizEngine + folderTreeView'")
         print("")
-        inStr = input("Your input: ")
+        if not silent:
+            inStr = input("Your input: ")
+        else:
+            inStr = 'A'
         try:
             if 'f' in inStr or 'F' in inStr:
                 Cards = 1
@@ -366,18 +370,21 @@ def select_moduls():
                 print("flashcards       | " + answers[Cards])
                 print("folderTreeView   | " + answers[Tree])
                 print("simpleQuizEngine | " + answers[Quiz])
-                while True:
-                    print("")
-                    ans=input("Are you happy with the selection? y/n  ")
-                    if ans == "y" or ans == "Y":
-                        return (Tree, Cards, Quiz)
-                    elif ans == "n" or ans == "N":
-                        break
+                if not silent:
+                    while True:
+                        print("")
+                        ans=input("Are you happy with the selection? y/n  ")
+                        if ans == "y" or ans == "Y":
+                            return (Tree, Cards, Quiz)
+                        elif ans == "n" or ans == "N":
+                            break
+                else:
+                     return (Tree, Cards, Quiz)
             else:
                 raise wrongSelectionError()
         except wrongSelectionError as e:
             print("")
-            print("/!\ /!\ /!\\")
+            print(r"/!\ /!\ /!\\")
             print(e)
             print("")
             
@@ -417,8 +424,14 @@ def uninstall_moduls(Tree = 1, Cards = 1, Quiz = 1):
         destination = os.path.join(cwd, "views", m)
         shutil.rmtree(destination, ignore_errors=True)
 
+silent = False
+
 if __name__ == '__main__':
     choise = -1
+    if len(sys.argv) > 1:
+        if sys.argv[1] == r"-s":
+            choise = 1
+            silent = True
     while not (choise > 0 and choise < 5):
         print("Select option:")
         print("[1] Clean install/reinstall")
@@ -480,5 +493,6 @@ if __name__ == '__main__':
         exit()
 
     print("Done now you can start with mainScript.py")
-    input()
+    if not silent:
+        input()
 
